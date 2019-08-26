@@ -38,7 +38,7 @@ console.log(corrigeHora(feriados.GO[2]));
 console.log(corrigeHora(feriados.TO[0].getTime()));
 
 document.querySelector("#submit").addEventListener("click", function(){
-    document.querySelector("#dataC").textContent = "Data final em dias corridos: 03/03/2019";
+    
 })
 
     /*
