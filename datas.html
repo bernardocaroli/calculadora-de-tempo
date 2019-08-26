@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="utf-8">
+                <title>datas</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+                <link rel="stylesheet" href="/home/bernardo/Documentos/DATAS/datas.css">
+            </head>
+
+            <body>
+                    <h1 id="cabecalho">Calculadora de dias</h1>
+                    <p>Selecione um estado, uma data inicial e o número de dias desejado.</p>
+                    <form>
+                    <div class="pergunta">
+                    <label>Estado: </label>
+                    <select name="estado" id="estado" required="">
+                                <option disabled="" value="">Selecione um estado</option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AM</option>
+                                <option value="BA">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="MS">MS</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>        
+                                <option value="PR">PR</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="GO">GO</option>
+                                <option value="PE">PE</option>
+                                <option value="TO">TO</option>
+                    </select>
+                    </div>
+                    <div class="pergunta">
+                                <label id="dataI">Data inicial: </label> 
+                                <input type="date" id="datainicial" placeholder="Digite a data inicial" required=""> 
+                    </div>
+                    <div class="pergunta">
+                                <label id="Dias">Número de dias: </label> 
+                                <input type="number" id="dias" min="0" placeholder="Digite o número de dias" required=""> 
+                    </div>
+                    <div class="pergunta">
+                                <label id="dataC">Data final em dias corridos: </label> 
+                                <input type="text" id="datacorridos" placeholder="Dias corridos"> 
+                    </div>
+                    <div class="pergunta">
+                                <label id="dataU">Data final em dias úteis: </label> 
+                                <input type="text" id="datauteis" placeholder="Dias úteis"> 
+                    </div>
+                </form>
+                    <button id="submit" type="submit">Calcular</button>
+            </body>
+
+<script src="/home/bernardo/Documentos/DATAS/datas.js"></script>
+</html>
