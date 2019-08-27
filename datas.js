@@ -29,56 +29,51 @@ const feriados = {
 };
 
 function corrigeHora(data) {
-    let DataCorrigida = new Date(new Date(data).getTime() + (24 * 60 * 60 * 1000));
+    let DataCorrigida = new Date(new Date(data).getTime() + (86400000));
+    DataCorrigida.setHours(0);
+    DataCorrigida.setMinutes(0);
+    DataCorrigida.setSeconds(0);
     return DataCorrigida;
-    
 };
 
-console.log(corrigeHora(feriados.GO[2]));
-console.log(corrigeHora(feriados.TO[0].getTime()));
+function isequal(a,b) {
+    if(a.getDate()==b.getDate() && a.getMonth()==b.getMonth())
+    return true;
+    else
+    return false;
+} 
 
-document.querySelector("#submit").addEventListener("click", function(){
-    
-})
+document.querySelector("#submit").addEventListener("click", () => {
+   let dataInicial = document.querySelector("#datainicial").value.split("/"); //leitura da data colocada no campo
+   let novaData = corrigeHora(new Date(dataInicial[2], dataInicial[1]-1, dataInicial[0]-1)); //organização no formato new Date()
+   const dias = document.querySelector("#dias").value; //recolhe o número de dias
+   let dataFinalC; //data final de dias corridos a ser impressa na tela
+   let dataFinalU; //data final de dias úteis a ser impressa na tela
 
-    /*
+   
+    if(novaData.getFullYear() != 2019 || dias<0) {
+    console.log("ERRO!");
+    return null;} 
+    else { 
+    dataFinalC = new Date(novaData.getTime() + (dias* 24 * 60 * 60 * 1000));
+    dataFinalU = new Date(novaData.getTime() + (dias* 24 * 60 * 60 * 1000));
 
-    function diasCorridos(){
-        let dataInicial = document.querySelector("#datainicial");
-        let dias = document.querySelector("#dias");
-        
-        if(dataInicial.getFullYear() != 2019) {
-            console.log("Ano não coberto pelo sistema");
-            return null;
+        if(dataFinalC.getDate()<10 && dataFinalC.getMonth()+1<10){
+            dataFinalC = document.querySelector("#datacorridos").value = "0"+dataFinalC.getDate()+"/0"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
         }
-
-        else {
-        let dataCorreta = corrigeHora(dataInicial);
-        
-       // console.log("Data inicial inserida: " + dataInicial.getDate() + "/" + (dataInicial.getMonth() + 1) + "/" + dataInicial.getFullYear());
-        let dataFinal = new Date(dataCorreta.getTime() + (dias * 24 * 60 * 60 * 1000));
-        
-       // return "Data após " + dias + " corridos: " + dataFinal.getDate() + "/" + (dataFinal.getMonth() + 1) + "/" + dataFinal.getFullYear();
-        
+        else if(dataFinalC.getMonth()+1<10){
+            dataFinalC = document.querySelector("#datacorridos").value = dataFinalC.getDate()+"/0"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
+        }
+        else if(dataFinalC.getDate()<10){
+            dataFinalC = document.querySelector("#datacorridos").value = "0"+dataFinalC.getDate()+"/"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
+        }
+        else{
+            dataFinalC = document.querySelector("#datacorridos").value = dataFinalC.getDate() + "/" + (dataFinalC.getMonth() + 1) + "/" + dataFinalC.getFullYear();
         }
     }
+});
 
-    let dataInicial = document.querySelector("#datainicial");
-    dataInicial.textContent = "TESTE";  }); 
-*/
 /*
-let feri2 = {
-    RJ: [new Date("2019-01-01"),new Date("2019-01-20")],
-    SP: [new Date("2019-01-01"),new Date("2019-01-20"),new Date("2019-03-19")]
-} ;
-
-console.log(feri2.RJ[0].toString());
-
-
-let teste = new Date("2019-08-21");
-console.log(teste.getTime());
-
-
 
 function diasCorridos(data, dias){  
 
@@ -104,7 +99,7 @@ let novaDataCorrida = diasCorridos("2019-09-01",1);
       else
       return false;
   }  
-  
+  */
 /*
 function diasUteis(data,dias,feriados) {
     let fer = 0; //contador que vai percorrer o vetor de feriados
