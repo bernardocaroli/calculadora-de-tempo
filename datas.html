@@ -12,7 +12,7 @@
                     <p>Selecione um estado, uma data inicial e o número de dias desejado.</p>
                     <form>
                     <div class="pergunta">
-                    <label>Estado: </label>
+                    <label>Estado: </label> <br>
                     <select name="estado" id="estado" required="">
                                 <option disabled="" value="">Selecione um estado</option>
                                 <option value="AC">AC</option>
@@ -43,20 +43,20 @@
                     </select>
                     </div>
                     <div class="pergunta">
-                                <label id="dataI">Data inicial: </label> 
-                                <input type="date" id="datainicial" placeholder="Digite a data inicial" required=""> 
+                                <label id="dataI">Data inicial: </label> <br>
+                                <input type="text" id="datainicial" placeholder="dd/mm/yyyy" required=""> 
                     </div>
                     <div class="pergunta">
-                                <label id="Dias">Número de dias: </label> 
-                                <input type="number" id="dias" min="0" placeholder="Digite o número de dias" required=""> 
+                                <label id="Dias">Número de dias: </label> <br>
+                                <input type="number" id="dias" placeholder="Digite o número de dias" required=""> 
+                    </div>
+                  <div class="pergunta">
+                                <label id="dataC">Data final em dias corridos: </label> <br>
+                                <input type="text" id="datacorridos" placeholder="dd/mm/yyyy">
                     </div>
                     <div class="pergunta">
-                                <label id="dataC">Data final em dias corridos: </label> 
-                                <input type="text" id="datacorridos" placeholder="Dias corridos"> 
-                    </div>
-                    <div class="pergunta">
-                                <label id="dataU">Data final em dias úteis: </label> 
-                                <input type="text" id="datauteis" placeholder="Dias úteis"> 
+                                <label id="dataU">Data final em dias úteis: </label> <br>
+                                <input type="text" id="datauteis" placeholder="dd/mm/yyyy">
                     </div>
                 </form>
                     <button id="submit" type="submit">Calcular</button>
