@@ -43,34 +43,66 @@ function isequalHora(a,b) {
     return false;
 }
 
-function isEqual(a,b) {
-    if(a==b)
-    return true;
-    else
-    return false;
-}
-
 function selecionaEstado(feriados) {
     const selecionaEstado = document.querySelector('#estado');
     let vetorPercorrido = feriados[selecionaEstado.value];
     return vetorPercorrido.map(vetorPercorrido => vetorPercorrido.getTime());
 }
 
+function diasCorridos(dtInicial,dias) {
+    dtFinal = new Date(dtInicial.getTime() + (dias* 24 * 60 * 60 * 1000));
+
+    if(dtFinal.getDate()<10 && dtFinal.getMonth()+1<10){
+        dtFinal = document.querySelector("#datacorridos").value = "0"+dtFinal.getDate()+"/0"+(dtFinal.getMonth()+1)+"/"+dtFinal.getFullYear();
+    }
+    else if(dtFinal.getMonth()+1<10){
+        dtFinal = document.querySelector("#datacorridos").value = dtFinal.getDate()+"/0"+(dtFinal.getMonth()+1)+"/"+dtFinal.getFullYear();
+    }
+    else if(dtFinal.getDate()<10){
+        dtFinal = document.querySelector("#datacorridos").value = "0"+dtFinal.getDate()+"/"+(dtFinal.getMonth()+1)+"/"+dtFinal.getFullYear();
+    }
+    else{
+        dtFinal = document.querySelector("#datacorridos").value = dtFinal.getDate() + "/" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
+    }
+
+}
+
+function diasUteis(dtInicial,dias,feriadosNoEstado) {
+
+    let diaSelecionado = dtInicial;
+    let x = 0;
+
+    while(x<dias) {
+        if(feriadosNoEstado.includes(diaSelecionado.getTime()) || diaSelecionado.getDay()!=0 || diaSelecionado.getDay!=6)
+        {
+            x++;
+        }
+        else {
+            x++;
+            dias--;
+        }
+        
+        diaSelecionado = diaSelecionado + 86400000;
+    }
+
+      return diaSelecionado;
+
+}
+
 document.querySelector("#submit").addEventListener("click", () => {
    let dataInicial = document.querySelector("#datainicial").value.split("/"); //leitura da data colocada no campo
    let novaData = corrigeHora(new Date(dataInicial[2], dataInicial[1]-1, dataInicial[0]-1)); //organização no formato new Date()
    const dias = document.querySelector("#dias").value; //recolhe o número de dias
-   let dataFinalC; //data final de dias corridos a ser impressa na tela
-   let dataFinalU; //data final de dias úteis a ser impressa na tela
-   let vetorFeriado = selecionaEstado(feriados);
-    
-    console.log(novaData);
-    console.log(vetorFeriado);
+   let dtFinalCorridos; //data final de dias corridos a ser impressa na tela
+   let dtFinalUteis; //data final de dias úteis a ser impressa na tela
+   let arrayFeriados = selecionaEstado(feriados); //array que mostra os feriados no estado selecionado na tela
     
 
-    if(vetorFeriado.includes(novaData)){console.log("teste");}
+    console.log(novaData.getDay());
+    console.log(novaData.getTime());
+    console.log(arrayFeriados);
 
-
+    
     if(novaData.getFullYear() != 2019) {
         alert("ERRO! APENAS O ANO DE 2019 É ACEITO!");
         return null;}
@@ -78,26 +110,16 @@ document.querySelector("#submit").addEventListener("click", () => {
         alert("ERRO! NÚMERO DE DIAS NEGATIVO NÃO É ACEITO!");
         return null;
     }
-    else {
-    dataFinalC = new Date(novaData.getTime() + (dias* 24 * 60 * 60 * 1000));
-    dataFinalU = new Date(novaData.getTime() + (dias* 24 * 60 * 60 * 1000));
-
-    dataFinalU = document.querySelector("#datauteis").value = dataFinalU.getDate() + "/" + (dataFinalU.getMonth() + 1) + "/" + dataFinalU.getFullYear();
-
-        if(dataFinalC.getDate()<10 && dataFinalC.getMonth()+1<10){
-            dataFinalC = document.querySelector("#datacorridos").value = "0"+dataFinalC.getDate()+"/0"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
-        }
-        else if(dataFinalC.getMonth()+1<10){
-            dataFinalC = document.querySelector("#datacorridos").value = dataFinalC.getDate()+"/0"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
-        }
-        else if(dataFinalC.getDate()<10){
-            dataFinalC = document.querySelector("#datacorridos").value = "0"+dataFinalC.getDate()+"/"+(dataFinalC.getMonth()+1)+"/"+dataFinalC.getFullYear();
-        }
-        else{
-            dataFinalC = document.querySelector("#datacorridos").value = dataFinalC.getDate() + "/" + (dataFinalC.getMonth() + 1) + "/" + dataFinalC.getFullYear();
-        }
-    }
+    else { 
+        dtFinalCorridos = diasCorridos(novaData,dias);
+        //dtFinalUteis = diasUteis(novaData,dias,arrayFeriados);
+    } 
+    
 });
+
+// dataFinalU = new Date(novaData.getTime() + (dias* 24 * 60 * 60 * 1000)); 
+
+//     dataFinalU = document.querySelector("#datauteis").value = dataFinalU.getDate() + "/" + (dataFinalU.getMonth() + 1) + "/" + dataFinalU.getFullYear();
 
 
 
