@@ -71,80 +71,109 @@ function diasCorridos(dtInicial, dias) {
 
 } //função que calcula a data final após n dias corridos, imprimindo-a no seu local devido na tela
 
-function diasUteis(diaSelecionado, dias, diasAnteriores) {
-    let u = 0;
-    // let f = 0;
-    while (u < dias) {
-        if (diaSelecionado.getDay() == 5) {
-            diaSelecionado = new Date(diaSelecionado.getTime() + 3 * 86400000);
-            console.log(diaSelecionado);
+// function diasUteis(diaSelecionado, dias, diasAnteriores) {
+//     let u = 0;
+//     // let f = 0;
+//     while (u < dias) {
+//         if (diaSelecionado.getDay() == 5) {
+//             diaSelecionado = new Date(diaSelecionado.getTime() + 3 * 86400000);
+//             console.log(diaSelecionado);
+//         }
+//         else if (diasAnteriores.includes(diaSelecionado.getTime())) {
+//             console.log("primeiro dia " + diaSelecionado);
+//             diaSelecionado = new Date(diaSelecionado.getTime()+2*86400000);
+//             console.log("segundo dia " + diaSelecionado);
+//             u--;
+//                 }
+//         else {
+//             diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+//             console.log(diaSelecionado);
+//         }
+//         u++;
+//     }
+//     diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+
+
+    function diasUteis(diaSelecionado,dias,arrayFeriados) {
+        let addDias = 0;
+        let u = 0;
+        dtFinal = new Date(diaSelecionado.getTime() + (dias * 24 * 60 * 60 * 1000));
+        
+        while(u<dias){
+        if(diaSelecionado.getDay()==0 || diaSelecionado.getDay()==6) 
+        {
+            addDias++;
         }
-        else if (diasAnteriores.includes(diaSelecionado.getTime())) {
-            console.log("primeiro dia " + diaSelecionado);
-            diaSelecionado = new Date(diaSelecionado.getTime()+2*86400000);
-            console.log("segundo dia " + diaSelecionado);
-            u--;
-                }
-        else {
-            diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
-            console.log(diaSelecionado);
+
+        if(arrayFeriados.includes(diaSelecionado.getTime()))
+        {
+            addDias++;
+        }
+
+        if((diaSelecionado.getDay()==0 || diaSelecionado.getDay()==6) && arrayFeriados.includes(diaSelecionado.getTime())) 
+        {
+            addDias--;
         }
         u++;
     }
-    diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
 
-    if(diaSelecionado.getDay()==0)
-    {
-        diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+    dtFinalReal = new Date(dtFinal.getTime() + (addDias * 24 * 60 * 60 * 1000))
     }
 
-    else if(diaSelecionado.getDay()==6)
-    {
-        diaSelecionado = new Date(diaSelecionado.getTime() + 2 * 86400000);
-    }
 
-    else if(diasAnteriores.includes(diaSelecionado.getTime())) {
 
-        // if(diaSelecionado.getDay()==0)
-        // {
-        // diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
-        // }
+//     if(diaSelecionado.getDay()==0)
+//     {
+//         diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+//     }
 
-        // else if(diaSelecionado.getDay()==6)
-        // {
-        // diaSelecionado = new Date(diaSelecionado.getTime() + 2 * 86400000);
-        // }
+//     else if(diaSelecionado.getDay()==6)
+//     {
+//         diaSelecionado = new Date(diaSelecionado.getTime() + 2 * 86400000);
+//     }
 
-            diaSelecionado = new Date(diaSelecionado.getTime() + 2*86400000);
+//     else if(diasAnteriores.includes(diaSelecionado.getTime())) {
+
+//         // if(diaSelecionado.getDay()==0)
+//         // {
+//         // diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+//         // }
+
+//         // else if(diaSelecionado.getDay()==6)
+//         // {
+//         // diaSelecionado = new Date(diaSelecionado.getTime() + 2 * 86400000);
+//         // }
+
+//             diaSelecionado = new Date(diaSelecionado.getTime() + 2*86400000);
         
-        // diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
-    }
+//         // diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+//     }
 
-    if (diaSelecionado.getDate() < 10 && diaSelecionado.getMonth() + 1 < 10) {
-        return diaSelecionado = document.querySelector("#datauteis").value = "0" + diaSelecionado.getDate() + "/0" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
+//     if (diaSelecionado.getDate() < 10 && diaSelecionado.getMonth() + 1 < 10) {
+//         return diaSelecionado = document.querySelector("#datauteis").value = "0" + diaSelecionado.getDate() + "/0" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
 
-    }
-    else if (diaSelecionado.getMonth() + 1 < 10) {
-        return diaSelecionado = document.querySelector("#datauteis").value = diaSelecionado.getDate() + "/0" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
+//     }
+//     else if (diaSelecionado.getMonth() + 1 < 10) {
+//         return diaSelecionado = document.querySelector("#datauteis").value = diaSelecionado.getDate() + "/0" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
 
-    }
-    else if (diaSelecionado.getDate() < 10) {
-        return diaSelecionado = document.querySelector("#datauteis").value = "0" + diaSelecionado.getDate() + "/" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
+//     }
+//     else if (diaSelecionado.getDate() < 10) {
+//         return diaSelecionado = document.querySelector("#datauteis").value = "0" + diaSelecionado.getDate() + "/" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
 
-    }
-    else {
-        return diaSelecionado = document.querySelector("#datauteis").value = diaSelecionado.getDate() + "/" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
+//     }
+//     else {
+//         return diaSelecionado = document.querySelector("#datauteis").value = diaSelecionado.getDate() + "/" + (diaSelecionado.getMonth() + 1) + "/" + diaSelecionado.getFullYear();
 
-    }
+//     }
 
-} //função que calcula a data final após n dias úteis, imprimindo-a no seu local devido na tela
+// } //função que calcula a data final após n dias úteis, imprimindo-a no seu local devido na tela
 
 document.querySelector("#submit").addEventListener("click", () => {
     let dataInicial = document.querySelector("#datainicial").value.split("/"); //leitura da data colocada no campo
     let novaData = corrigeHora(new Date(dataInicial[2], dataInicial[1] - 1, dataInicial[0] - 1)); //organização no formato new Date()
     const dias = document.querySelector("#dias").value; //recolhe o número de dias
     let arrayFeriados = selecionaEstado(feriados); //array que mostra os feriados no estado selecionado na tela
-    let arrayDiasAnteriores = diaAnterior(feriados);
+    
 
 
     if (novaData.getFullYear() != 2019) {
@@ -157,7 +186,7 @@ document.querySelector("#submit").addEventListener("click", () => {
     }
     else {
         dtFinalCorridos = diasCorridos(novaData, dias); //data final de dias corridos a ser impressa na tela
-        dtFinalUteis = diasUteis(novaData, dias, arrayDiasAnteriores); //data final de dias úteis a ser impressa na tela
+        dtFinalUteis = diasUteis(novaData, dias, arrayFeriados); //data final de dias úteis a ser impressa na tela
 
     }
 
