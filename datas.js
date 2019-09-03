@@ -36,16 +36,10 @@ const feriados = {
     TO: [corrigeHora(new Date("2019-01-01")), corrigeHora(new Date("2019-04-19")), corrigeHora(new Date("2019-04-21")), corrigeHora(new Date("2019-05-01")), corrigeHora(new Date("2019-09-07")), corrigeHora(new Date("2019-09-08")), corrigeHora(new Date("2019-10-05")), corrigeHora(new Date("2019-10-12")), corrigeHora(new Date("2019-11-02")), corrigeHora(new Date("2019-11-15")), corrigeHora(new Date("2019-12-25"))],
 }; //objeto contendo os feriados em cada estado brasileiro
 
-function mostraFeriado(feriados) {
-    const selecionaEstado = document.querySelector('#estado');
-    let vetorPercorrido = feriados[selecionaEstado.value];
-    return vetorPercorrido;
-} //função que pega o estado selecionado pelo usuário e cria um array apenas com os feriados no próprio estado
-
 function selecionaEstado(feriados) {
     const selecionaEstado = document.querySelector('#estado');
     let vetorPercorrido = feriados[selecionaEstado.value];
-    return vetorPercorrido.map(vetorPercorrido => vetorPercorrido.getTime());
+    return vetorPercorrido.map(vetorPercorrido => vetorPercorrido.getTime()); //com o map, transforma o array de datas em um array de milisegundos
 } //função que pega o estado selecionado pelo usuário e cria um array apenas com os feriados (em milisegundos) no próprio estado
 
 function mostraDiaDaSemana(diaSelecionado) {
@@ -59,8 +53,10 @@ function mostraDiaDaSemana(diaSelecionado) {
 } //função que imprime na tela o dia da semana em português
 
 function diasCorridos(dtInicial, dias) {
-    dtFinal = new Date(dtInicial.getTime() + (dias * 24 * 60 * 60 * 1000));
+    dtFinal = new Date(dtInicial.getTime() + (dias * 24 * 60 * 60 * 1000)); 
 
+
+    // parte responsável por mostrar a data na tela
     if (dtFinal.getDate() < 10 && dtFinal.getMonth() + 1 < 10) {
         return dtFinal = document.querySelector("#datacorridos").value = "0" + dtFinal.getDate() + "/0" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
@@ -81,24 +77,24 @@ function diasCorridos(dtInicial, dias) {
 
 } //função que calcula a data final após n dias corridos, imprimindo-a no seu local devido na tela
 
-function diasUteis(diaSelecionado, dias, arrayFeriadosTempo, arrayFeriadosDatas) {
-    let u = 0;
-    let arrFeriados = [];
+function diasUteis(diaSelecionado, dias, arrayFeriadosTempo) {
+    let u = 0; //contador de dias úteis
+    let arrFeriados = []; //array de feriados que serão mostrados na tela
     arrFeriados.push("FERIADOS NESSA ÉPOCA");
 
     while(u<dias) {
-        if(!(diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6 || arrayFeriadosTempo.includes(diaSelecionado.getTime()))) {
+        if(!(diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6 || arrayFeriadosTempo.includes(diaSelecionado.getTime()))) { //se for dia útil, incrementa o contador de dias úteis
             u++;
         }
 
         if(arrayFeriadosTempo.includes(diaSelecionado.getTime())) {
             
-            arrFeriados.push(`${diaSelecionado.getDate()}/${diaSelecionado.getMonth()+1}/${diaSelecionado.getFullYear()}`);
+            arrFeriados.push(`${diaSelecionado.getDate()}/${diaSelecionado.getMonth()+1}/${diaSelecionado.getFullYear()} (${mostraDiaDaSemana(diaSelecionado)})`); //adicionando datas no array de Feriados
         }
-        diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
+        diaSelecionado = new Date(diaSelecionado.getTime() + 86400000); //pulando um dia dentro do while
     }
 
-    if(arrFeriados.length>0) {
+    if(arrFeriados.length>0) { //imprimindo os feriados na tela
         arrFeriados.forEach(function(feriado){
             
             let mensagem = document.getElementById("mensagens-feriado");  
@@ -113,6 +109,8 @@ function diasUteis(diaSelecionado, dias, arrayFeriadosTempo, arrayFeriadosDatas)
 
     dtFinal = new Date(diaSelecionado);
 
+
+    // parte responsável por ajustar a data final, caso esta caia num final de semana ou feriado
     if(dtFinal.getDay()==0) {
         dtFinal = new Date(dtFinal.getTime() + 86400000);
         if (arrayFeriadosTempo.includes(dtFinal.getTime())) { dtFinal = new Date(dtFinal.getTime() + 86400000); }
@@ -133,6 +131,8 @@ function diasUteis(diaSelecionado, dias, arrayFeriadosTempo, arrayFeriadosDatas)
         }
     }
     
+
+    // parte responsável por mostrar a data na tela
     if (dtFinal.getDate() < 10 && dtFinal.getMonth() + 1 < 10) {
         return dtFinal = document.querySelector("#datauteis").value = "0" + dtFinal.getDate() + "/0" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
@@ -156,7 +156,6 @@ document.querySelector("#submit").addEventListener("click", () => {
     let novaData = corrigeHora(new Date(dataInicial[2], dataInicial[1] - 1, dataInicial[0] - 1)); //organização no formato new Date()
     const dias = document.querySelector("#dias").value; //recolhe o número de dias
     let arrayFeriadosTempo = selecionaEstado(feriados); //array que mostra os feriados no estado selecionado na tela (em milisegundos)
-    let arrayFeriadosDatas = mostraFeriado(feriados); //array que mostra as datas dos feriados no estado selecionado na tela
     let arrayDeErros = []; //array de erros causados por falha do usuário
 
     if (novaData.getFullYear() != 2019) {
@@ -190,7 +189,7 @@ document.querySelector("#submit").addEventListener("click", () => {
 
     else {
         dtFinalCorridos = diasCorridos(novaData, dias); //data final de dias corridos a ser impressa na tela
-        dtFinalUteis = diasUteis(novaData, dias, arrayFeriadosTempo, arrayFeriadosDatas); //data final de dias úteis a ser impressa na tela
+        dtFinalUteis = diasUteis(novaData, dias, arrayFeriadosTempo); //data final de dias úteis a ser impressa na tela
 
     }
 
