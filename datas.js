@@ -82,126 +82,82 @@ function diasCorridos(dtInicial, dias) {
 } //função que calcula a data final após n dias corridos, imprimindo-a no seu local devido na tela
 
 function diasUteis(diaSelecionado, dias, arrayFeriadosTempo, arrayFeriadosDatas) {
-    let addFds = 0;
-    let addFeriados = 0;
-    let addAmbos = 0;
-    let addFds2 = 0;
-    let addFeriados2 = 0;
-    let addAmbos2 = 0;
     let u = 0;
-    
-    if (diaSelecionado.getDay() == 6) {
+    let arrFeriados = [];
+    arrFeriados.push("FERIADOS NESSA ÉPOCA");
+
+    while(u<dias) {
+        if(!(diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6 || arrayFeriadosTempo.includes(diaSelecionado.getTime()))) {
+            u++;
+        }
+
+        if(arrayFeriadosTempo.includes(diaSelecionado.getTime())) {
+            
+            arrFeriados.push(`${diaSelecionado.getDate()}/${diaSelecionado.getMonth()+1}/${diaSelecionado.getFullYear()}`);
+        }
         diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
     }
 
-    u = 1;
-    dtFinal = new Date(diaSelecionado.getTime() + ((dias) * 24 * 60 * 60 * 1000));
-
-    while (u < dias) {
-        if (diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6) {
-            addFds++;
-        }
-
-        if (arrayFeriadosTempo.includes(diaSelecionado.getTime())) {
-            addFeriados++;
-        }
-
-        if ((diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6) && arrayFeriadosTempo.includes(diaSelecionado.getTime())) {
-            addAmbos++;
-        }
-        u++;
-        diaSelecionado = new Date(diaSelecionado.getTime() + 86400000);
-    }
-
-    arrayFeriadosDatas.forEach(function (feriado) {
-        let mensagem = document.getElementById("mensagens-feriado");
-        const feriadoTemplate = `
-            <li class="mensagens-feriado">${feriado.getDate()}/${feriado.getMonth() + 1}/${feriado.getFullYear()} (${mostraDiaDaSemana(feriado)})</li>
+    if(arrFeriados.length>0) {
+        arrFeriados.forEach(function(feriado){
+            
+            let mensagem = document.getElementById("mensagens-feriado");  
+            const feriadoTemplate = `
+            <li class="mensagens-feriado">${feriado}</li>
             `
-        mensagem.innerHTML += feriadoTemplate;
-    })
+            mensagem.innerHTML += feriadoTemplate;
 
-    dtFinal1 = new Date(diaSelecionado.getTime() + ((addFds + addFeriados - addAmbos) * 24 * 60 * 60 * 1000));
+           
+        })
+    }
 
-    console.log(`dtFinal= ${dtFinal}
-dtFinal1= ${dtFinal1}`);
+    dtFinal = new Date(diaSelecionado);
 
-    if (dtFinal.getDay() == 6) {
+    if(dtFinal.getDay()==0) {
         dtFinal = new Date(dtFinal.getTime() + 86400000);
-        console.log(dtFinal);
+        if (arrayFeriadosTempo.includes(dtFinal.getTime())) { dtFinal = new Date(dtFinal.getTime() + 86400000); }
     }
 
-    while(dtFinal.getTime()<dtFinal1.getTime()){
-        if(dtFinal.getDay() == 0 || dtFinal.getDay() == 6) {
-            console.log(dtFinal);
-            addFds2++;
-            console.log(`contador de fds ${addFds2}`);
+    else if (dtFinal.getDay() == 6) {
+        dtFinal = new Date(dtFinal.getTime() + (2 * 86400000));
+        if (arrayFeriadosTempo.includes(dtFinal.getTime())) { dtFinal = new Date(dtFinal.getTime() + 86400000); }
+    }
+
+    else if (arrayFeriadosTempo.includes(dtFinal.getTime())) {
+        dtFinal = new Date(dtFinal.getTime() + 86400000);
+        if (dtFinal.getDay() == 0) {
+            dtFinal = new Date(dtFinal.getTime() + 86400000);
         }
-
-        if(arrayFeriadosTempo.includes(dtFinal.getTime())) {
-            console.log(dtFinal);
-            addFeriados2++;
-            console.log(`contador de feriados ${addFeriados2}`);
+        else if (dtFinal.getDay() == 6) {
+            dtFinal = new Date(dtFinal.getTime() + (2 * 86400000));
         }
-
-        if ((dtFinal.getDay() == 0 || dtFinal.getDay() == 6) && arrayFeriadosTempo.includes(dtFinal.getTime())) {
-            console.log(dtFinal);
-            addAmbos2++;
-            console.log(`contador de feriados ${addAmbos2}`);
-        }
-
-        dtFinal = new Date(dtFinal.getTime()+86400000);
-        }
-
-    dtFinal2 = new Date(dtFinal1.getTime() + ((addFds2 + addFeriados2 - addAmbos2) * 24 * 60 * 60 * 1000));
-    console.log(dtFinal2);
-
-    if(dtFinal2.getDay()==0) {
-        dtFinal2 = new Date(dtFinal2.getTime() + 86400000);
-        if(arrayFeriadosTempo.includes(dtFinal2.getTime())) {dtFinal2 = new Date(dtFinal2.getTime() + 86400000);}
     }
-
-    else if(dtFinal2.getDay()==6) {
-        dtFinal2 = new Date(dtFinal2.getTime() + (2*86400000));
-        if(arrayFeriadosTempo.includes(dtFinal2.getTime())) {dtFinal2 = new Date(dtFinal2.getTime() + 86400000);}
-    }
-
-    else if(arrayFeriadosTempo.includes(dtFinal2.getTime())) {
-        dtFinal2 = new Date(dtFinal2.getTime() + 86400000);
-        if(dtFinal2.getDay()==0) {
-            dtFinal2 = new Date(dtFinal2.getTime() + 86400000);}
-        else if(dtFinal2.getDay()==6) {
-            dtFinal2 = new Date(dtFinal2.getTime() + (2*86400000));}
-    }
-
-
-    if (dtFinal2.getDate() < 10 && dtFinal2.getMonth() + 1 < 10) {
-        return dtFinal2 = document.querySelector("#datauteis").value = "0" + dtFinal2.getDate() + "/0" + (dtFinal2.getMonth() + 1) + "/" + dtFinal2.getFullYear();
+    
+    if (dtFinal.getDate() < 10 && dtFinal.getMonth() + 1 < 10) {
+        return dtFinal = document.querySelector("#datauteis").value = "0" + dtFinal.getDate() + "/0" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
     }
-    else if (dtFinal2.getMonth() + 1 < 10) {
-        return dtFinal2 = document.querySelector("#datauteis").value = dtFinal2.getDate() + "/0" + (dtFinal2.getMonth() + 1) + "/" + dtFinal2.getFullYear();
+    else if (dtFinal.getMonth() + 1 < 10) {
+        return dtFinal = document.querySelector("#datauteis").value = dtFinal.getDate() + "/0" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
     }
-    else if (dtFinal2.getDate() < 10) {
-        return dtFinal2 = document.querySelector("#datauteis").value = "0" + dtFinal2.getDate() + "/" + (dtFinal2.getMonth() + 1) + "/" + dtFinal2.getFullYear();
+    else if (dtFinal.getDate() < 10) {
+        return dtFinal = document.querySelector("#datauteis").value = "0" + dtFinal.getDate() + "/" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
     }
     else {
-        return dtFinal2 = document.querySelector("#datauteis").value = dtFinal2.getDate() + "/" + (dtFinal2.getMonth() + 1) + "/" + dtFinal2.getFullYear();
+        return dtFinal = document.querySelector("#datauteis").value = dtFinal.getDate() + "/" + (dtFinal.getMonth() + 1) + "/" + dtFinal.getFullYear();
 
     }
-
 } //função que calcula a data final após n dias úteis, imprimindo-a no seu local devido na tela
-
 
 document.querySelector("#submit").addEventListener("click", () => {
     let dataInicial = document.querySelector("#datainicial").value.split("/"); //leitura da data colocada no campo
     let novaData = corrigeHora(new Date(dataInicial[2], dataInicial[1] - 1, dataInicial[0] - 1)); //organização no formato new Date()
     const dias = document.querySelector("#dias").value; //recolhe o número de dias
-    let arrayFeriadosTempo = selecionaEstado(feriados); //array que mostra os feriados no estado selecionado na tela
-    let arrayFeriadosDatas = mostraFeriado(feriados);
-    let arrayDeErros = [];
+    let arrayFeriadosTempo = selecionaEstado(feriados); //array que mostra os feriados no estado selecionado na tela (em milisegundos)
+    let arrayFeriadosDatas = mostraFeriado(feriados); //array que mostra as datas dos feriados no estado selecionado na tela
+    let arrayDeErros = []; //array de erros causados por falha do usuário
 
     if (novaData.getFullYear() != 2019) {
         arrayDeErros.push("ERRO! APENAS O ANO DE 2019 É ACEITO!");
