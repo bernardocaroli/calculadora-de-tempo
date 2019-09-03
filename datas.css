@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -42,6 +42,18 @@ p {
     width: 50%;
 }
 
+.mensagens-erro {
+    color: red;
+    font-weight: bold;
+    margin-top: 2.5%;
+    margin-left: 15%;
+}
+
+.some {
+	opacity: 0;
+	transition: 0.5s;
+}
+
 #submit {
     background-color: navy;
     border-radius: 4px;
@@ -52,6 +64,15 @@ p {
     width: 96px;
     margin-inline: 45%;
     border: 1px solid;
+    margin-top: 2.5%;
+    margin-left: 50%;
     text-align: center;
     cursor: pointer;
+}
+
+#mensagens-feriado {
+    color: navy;
+    font-weight: bold;
+    margin-top: 2.5%;
+    margin-left: 15%;
 }
