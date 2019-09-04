@@ -1,10 +1,12 @@
 function corrigeHora(data) {
     let DataCorrigida = new Date(new Date(data).getTime() + (86400000));
-    DataCorrigida.setHours(5);
+    DataCorrigida.setHours(0);
     DataCorrigida.setMinutes(0);
     DataCorrigida.setSeconds(0);
     return DataCorrigida;
 } //função que corrige o horário do dia em questão para meia noite (não entendi pq isso ocorre)
+
+//https://www.digitalocean.com/community/tutorials/understanding-date-and-time-in-javascript
 
 const feriados = {
     AC: [corrigeHora(new Date("2019-01-01")), corrigeHora(new Date("2019-01-20")), corrigeHora(new Date("2019-01-23")), corrigeHora(new Date("2019-03-08")), corrigeHora(new Date("2019-04-19")), corrigeHora(new Date("2019-04-21")), corrigeHora(new Date("2019-05-01")), corrigeHora(new Date("2019-06-15")), corrigeHora(new Date("2019-08-06")), corrigeHora(new Date("2019-09-06")), corrigeHora(new Date("2019-09-07")), corrigeHora(new Date("2019-10-12")), corrigeHora(new Date("2019-11-02")), corrigeHora(new Date("2019-11-15")), corrigeHora(new Date("2019-12-25"))],
@@ -41,6 +43,11 @@ function selecionaEstado(feriados) {
     let vetorPercorrido = feriados[selecionaEstado.value];
     return vetorPercorrido.map(vetorPercorrido => vetorPercorrido.getTime()); //com o map, transforma o array de datas em um array de milisegundos
 } //função que pega o estado selecionado pelo usuário e cria um array apenas com os feriados (em milisegundos) no próprio estado
+
+function retornaEstadoSelecionado() {
+    const selecionaEstado = document.querySelector('#estado');
+    return selecionaEstado.value;
+} //função que retorna qual estado foi selecionado pelo usuário na tela
 
 function mostraDiaDaSemana(diaSelecionado) {
     if (diaSelecionado.getDay() == 0) { return "Domingo"; }
@@ -80,7 +87,7 @@ function diasCorridos(dtInicial, dias) {
 function diasUteis(diaSelecionado, dias, arrayFeriadosTempo) {
     let u = 0; //contador de dias úteis
     let arrFeriados = []; //array de feriados que serão mostrados na tela
-    arrFeriados.push("FERIADOS NESSA ÉPOCA");
+    arrFeriados.push(`Feriados em ${retornaEstadoSelecionado()} nessa época: `);
 
     while(u<dias) {
         if(!(diaSelecionado.getDay() == 0 || diaSelecionado.getDay() == 6 || arrayFeriadosTempo.includes(diaSelecionado.getTime()))) { //se for dia útil, incrementa o contador de dias úteis
@@ -190,7 +197,6 @@ document.querySelector("#submit").addEventListener("click", () => {
     else {
         dtFinalCorridos = diasCorridos(novaData, dias); //data final de dias corridos a ser impressa na tela
         dtFinalUteis = diasUteis(novaData, dias, arrayFeriadosTempo); //data final de dias úteis a ser impressa na tela
-
     }
 
 });
